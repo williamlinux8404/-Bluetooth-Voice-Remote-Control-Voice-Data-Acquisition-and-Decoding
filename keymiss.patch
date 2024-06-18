@@ -1,0 +1,30 @@
++++ system/bt/stack/btm/btm_sec.cc	2022-11-25 09:31:34.005993479 +0800
+@@ -39,6 +39,7 @@
+ #include "btu.h"
+ #include "hcimsgs.h"
+ #include "l2c_int.h"
++#include "btif_api.h"
+ 
+ #include "gatt_int.h"
+ 
+@@ -115,6 +116,9 @@
+ static bool btm_sec_use_smp_br_chnl(tBTM_SEC_DEV_REC* p_dev_rec);
+ static bool btm_sec_is_master(tBTM_SEC_DEV_REC* p_dev_rec);
+ 
++extern bool btm_add_dev_to_controller (bool to_add, const RawAddress& bd_addr);
++
++
+ /* true - authenticated link key is possible */
+ static const bool btm_sec_io_map[BTM_IO_CAP_MAX][BTM_IO_CAP_MAX] = {
+     /*   OUT,    IO,     IN,     NONE */
+@@ -3980,6 +3984,10 @@
+         status == HCI_ERR_ENCRY_MODE_NOT_ACCEPTABLE) {
+       p_dev_rec->sec_flags &= ~(BTM_SEC_LE_LINK_KEY_KNOWN);
+       p_dev_rec->ble.key_type = BTM_LE_KEY_NONE;
++	  /* keymiss patch begin*/
++	  btm_add_dev_to_controller(FALSE,p_dev_rec->bd_addr);
++	  btif_dm_remove_bond(&(p_dev_rec->bd_addr));
++	  /* keymiss patch end*/
+     }
+     btm_ble_link_encrypted(p_dev_rec->ble.pseudo_addr, encr_enable);
+     return;

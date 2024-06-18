@@ -1,0 +1,17 @@
+--- drivers/hid/hidraw.c	2021-03-29 21:22:36.000000000 +0800
++++ drivers/hid/hidraw.c	2022-10-26 23:57:35.039457062 +0800
+@@ -520,8 +520,13 @@ int hidraw_connect(struct hid_device *hi
+ 	result = -EINVAL;
+ 
+ 	mutex_lock(&minors_lock);
+-
++	if(hid->vendor==0x2b54 && hid->product==0x1600)
++	{
++		minor = 0;
++	} else { 
++		minor = 1;
++	}
+	for (minor; minor < HIDRAW_MAX_DEVICES; minor++) {
+ 		if (hidraw_table[minor])
+ 			continue;
+ 		hidraw_table[minor] = dev;
