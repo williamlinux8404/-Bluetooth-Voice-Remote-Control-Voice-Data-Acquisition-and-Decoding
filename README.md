@@ -39,6 +39,11 @@ This project aims to acquire voice data from a Bluetooth voice remote control on
   **Android.mk**: Build configuration file.
 - `audio_policy.conf`：音频配置文件，用于配置语音通道。
   **audio_policy.conf**: Audio configuration file used to configure the voice channel.
+- `hidraw.patch`：Linux内核补丁，用于绑定hidraw设备节点为hidraw0。
+  **hidraw.patch**: Linux kernel patch to bind the hidraw device node as hidraw0 based on the remote control's PID and VID.
+- `keymiss.patch`：用于修复Android蓝牙协议栈（Bluedroid）中的一个bug。
+  **keymiss.patch**: Patch to fix a bug in the Android Bluetooth stack (Bluedroid) where the host does not delete pairing information when a key miss occurs.
+
 
 ## 安装 / Installation
 
@@ -46,6 +51,7 @@ This project aims to acquire voice data from a Bluetooth voice remote control on
 - Android源码树
 - 已配置NDK和环境变量
 - JDK 8或更高版本 / JDK 8 or higher
+- Linux内核源码树（用于应用`hidraw.patch`） / Linux kernel source tree (for applying `hidraw.patch`)
 
 ### 步骤 / Steps
 
